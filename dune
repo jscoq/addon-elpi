@@ -1,0 +1,6 @@
+
+(rule
+ (alias all)
+ (deps (source_tree workdir))
+ (action
+  (run make -C workdir)))
