@@ -1,6 +1,16 @@
 
+(alias
+ (name all)
+ (deps coq-pkgs))
+
 (rule
- (alias all)
+ (alias make)
  (deps (source_tree workdir))
  (action
   (run make -C workdir)))
+
+(rule
+ (targets coq-pkgs)
+ (deps (alias make))
+ (action
+  (run jscoq build workdir/theories --top elpi --package coq-pkgs/elpi.coq-pkg)))
