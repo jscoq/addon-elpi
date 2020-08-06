@@ -1,11 +1,16 @@
 REPO = https://github.com/LPCIC/coq-elpi.git
-TAG = coq-v8.11
+TAG = coq-v8.12
 WORKDIR = workdir
 
 .PHONY: all get
 
 all: $(WORKDIR)
+	@echo '- Installing dependencies -'
+	sed -i.bak '/"coq"/d' workdir/coq-elpi.opam  # don't install Coq
+	opam install --deps-only $(WORKDIR)/
+	make -C $(WORKDIR)
 	dune build
+# @todo: can run make as part of Dune build?
 
 get: $(WORKDIR)
 

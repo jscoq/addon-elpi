@@ -4,13 +4,8 @@
  (deps coq-pkgs))
 
 (rule
- (alias make)
+ (targets coq-pkgs)
  (deps (source_tree workdir))
  (action
-  (run make -C workdir)))
+  (run jscoq build --workspace %{dep:elpi.json})))
 
-(rule
- (targets coq-pkgs)
- (deps (alias make))
- (action
-  (run jscoq build workdir/theories --top elpi --package coq-pkgs/elpi.coq-pkg)))
