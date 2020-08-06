@@ -1,11 +1,12 @@
 
-(alias
- (name all)
- (deps coq-pkgs))
-
 (rule
  (targets coq-pkgs)
  (deps (source_tree workdir))
  (action
   (run jscoq build --workspace %{dep:elpi.json})))
 
+(alias
+ (name all)
+ (deps package.json))
+
+(dirs workdir)
