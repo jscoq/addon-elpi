@@ -7,7 +7,7 @@ WORKDIR = workdir
 all: $(WORKDIR)
 	@echo '- Installing dependencies -'
 	sed -i.bak '/"coq"/d' workdir/coq-elpi.opam  # don't install Coq
-	opam install --deps-only $(WORKDIR)/
+	opam install -y --deps-only $(WORKDIR)/
 	make -C $(WORKDIR)
 	dune build
 # @todo: can run make as part of Dune build?
