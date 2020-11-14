@@ -7,7 +7,7 @@ WORKDIR = workdir
 all: $(WORKDIR)
 	@echo '- Installing dependencies -'
 	sed -i.bak '/"coq"/d' workdir/coq-elpi.opam  # don't install Coq
-	opam install -y --deps-only $(WORKDIR)/
+	unset DUNE_WORKSPACE && opam install -y --deps-only $(WORKDIR)/
 	make -C $(WORKDIR)
 	dune build
 # @todo: can run make as part of Dune build?
@@ -18,3 +18,6 @@ $(WORKDIR):
 	git clone --depth=1 -b $(TAG) $(REPO) $(WORKDIR)
 	rm -f $(WORKDIR)/coq-builtin.elpi  # this file should not be there
 
+clean:
+	make -C $(WORKDIR) clean
+	rm -f $(WORKDIR)/Makefile.coq{,.conf}
