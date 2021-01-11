@@ -1,7 +1,9 @@
 
 (rule
  (targets coq-pkgs)
- (deps (source_tree workdir))
+ (deps
+  (package coq-elpi)
+  workdir/src/elpi_plugin.cma)
  (action
   (run npx %{env:pkgtool=jscoq} build --workspace %{dep:elpi.json})))
 

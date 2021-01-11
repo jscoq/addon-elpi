@@ -1,0 +1,32 @@
+(library
+ (name elpi_plugin_lib)
+ (public_name coq-elpi.plugin)
+ (flags :standard -rectypes)
+ (preprocess (staged_pps ppx_import ppx_deriving_yojson))
+ (libraries elpi coq.vernac coq.plugins.ltac))
+
+(coq.pp (modules coq_elpi_vernacular_syntax))
+
+;
+; These are hacks because Dune's `library` does not support `-linkpkg`,
+; which is an ocamlfind feature.
+; https://discuss.ocaml.org/t/dune-problems-using-dynlink-plugins/2874/6
+;
+(rule
+    (targets elpi_plugin.cmxs)
+    (deps elpi_plugin_lib.cmxa)
+    (action (run ocamlfind ocamlopt -shared -linkpkg -linkall -dontlink unix
+              -package elpi
+			  %{deps}
+			  -o %{targets}
+    )))
+
+(rule
+    (targets elpi_plugin.cma)
+    (deps elpi_plugin_lib.cma)
+    (action (run ocamlfind ocamlc -linkpkg -linkall -a -dontlink unix
+              -package elpi
+			  %{deps}
+			  -o %{targets}
+    )))
+

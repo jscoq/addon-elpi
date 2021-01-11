@@ -2,15 +2,21 @@ REPO = https://github.com/LPCIC/coq-elpi.git
 TAG = coq-v8.12
 WORKDIR = workdir
 
-.PHONY: all get
+.PHONY: all get prepare
 
-all: $(WORKDIR)
+all: $(WORKDIR) prepare $(WORKDIR)/src/coq_elpi_config.ml
+	cp -r dune-files/* $(WORKDIR)/
+	dune build
+
+prepare: $(WORKDIR)
 	@echo '- Installing dependencies -'
 	sed -i.bak '/"coq"/d' workdir/coq-elpi.opam  # don't install Coq
 	unset DUNE_WORKSPACE && opam install -y --deps-only $(WORKDIR)/
-	make -C $(WORKDIR)
-	dune build
-# @todo: can run make as part of Dune build?
+	node adjust_paths.js
+
+# can probably go in dune as well
+$(WORKDIR)/src/coq_elpi_config.ml: prepare
+	echo "let elpi_dir = \"$$(ocamlfind query elpi)\"" > $@
 
 get: $(WORKDIR)
 
