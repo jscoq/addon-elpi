@@ -1,5 +1,5 @@
 REPO = https://github.com/LPCIC/coq-elpi.git
-TAG = coq-v8.12
+TAG = v1.9.7
 WORKDIR = workdir
 
 .PHONY: all get prepare

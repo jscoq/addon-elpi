@@ -8,7 +8,7 @@
             },
             "theories": {
                 "prefix": "elpi",
-                "dirpaths": [{"logical": "", "rec": false}, "derive"]
+                "dirpaths": [{"logical": "", "rec": false}]
             }
         }
     }

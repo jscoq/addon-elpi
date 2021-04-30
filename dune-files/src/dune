@@ -2,7 +2,6 @@
  (name elpi_plugin_lib)
  (public_name coq-elpi.plugin)
  (flags :standard -rectypes)
- (preprocess (staged_pps ppx_import ppx_deriving_yojson))
  (libraries elpi coq.vernac coq.plugins.ltac))
 
 (coq.pp (modules coq_elpi_vernacular_syntax))
@@ -21,10 +20,11 @@
 			  -o %{targets}
     )))
 
+; For waCoq, to avoid multiple load of modules that are already linked (pretty messy)
 (rule
     (targets elpi_plugin.cma)
     (deps elpi_plugin_lib.cma)
-    (action (run ocamlfind ocamlc -linkpkg -linkall -a -dontlink unix
+    (action (run ocamlfind ocamlc -linkpkg -a -dontlink unix,result,ppx_deriving.runtime
               -package elpi
 			  %{deps}
 			  -o %{targets}

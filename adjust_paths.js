@@ -8,7 +8,8 @@ var fs = require('fs'),
     child_process = require('child_process');
 
 function findCoqFiles() {
-    var c = child_process.spawnSync('find', ['workdir', '-name', '*.v'], {encoding: 'utf-8'});
+    var c = child_process.spawnSync('find',
+        ['workdir', '-name', '*.v', '-o', '-name', '*.elpi'], {encoding: 'utf-8'});
     return c.output[1].split(/\s+/).filter(x => x);
 }
 
@@ -19,6 +20,12 @@ function processFile(filename) {
         (_, pre, fn, suf) => {
         console.log('>> ', fn);
         if (!fn.startsWith('elpi/workdir/')) fn = `elpi/workdir/${fn}`;
+        return (pre + fn + suf);
+    })
+    .replace(/^(accumulate )(.*?)([.])/gm,
+        (_, pre, fn, suf) => {
+        console.log('>> ', fn);
+        fn = fn.replace(/^elpi[/]/, '');
         return (pre + fn + suf);
     });
     fs.writeFileSync(filename, text);
