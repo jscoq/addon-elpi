@@ -6,7 +6,8 @@ WORKDIR = workdir
 
 all: $(WORKDIR) prepare $(WORKDIR)/src/coq_elpi_config.ml
 	cp -r dune-files/* $(WORKDIR)/
-	dune build
+	# must build plugin first
+	dune build $(WORKDIR)/src && dune build
 
 prepare: $(WORKDIR)
 	@echo '- Installing dependencies -'
