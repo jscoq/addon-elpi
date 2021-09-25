@@ -2,9 +2,9 @@
  (name elpi_plugin_lib)
  (public_name coq-elpi.plugin)
  (flags :standard -rectypes)
- (libraries elpi coq.vernac coq.plugins.ltac))
+ (libraries elpi coq-core.vernac coq-core.plugins.ltac))
 
-(coq.pp (modules coq_elpi_vernacular_syntax))
+(coq.pp (modules coq_elpi_vernacular_syntax coq_elpi_arg_syntax))
 
 ;
 ; These are hacks because Dune's `library` does not support `-linkpkg`,
