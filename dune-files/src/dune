@@ -6,6 +6,11 @@
 
 (coq.pp (modules coq_elpi_vernacular_syntax coq_elpi_arg_syntax))
 
+(install
+ (section lib_root)
+ (package coq-elpi)
+ (files (elpi_plugin.cmxs as coq/user-contrib/elpi/elpi_plugin.cmxs)))
+
 ;
 ; These are hacks because Dune's `library` does not support `-linkpkg`,
 ; which is an ocamlfind feature.
@@ -13,6 +18,7 @@
 ;
 (rule
     (targets elpi_plugin.cmxs)
+    (package coq-elpi)
     (deps elpi_plugin_lib.cmxa)
     (action (run ocamlfind ocamlopt -shared -linkpkg -linkall -dontlink unix
               -package elpi

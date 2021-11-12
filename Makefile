@@ -28,3 +28,6 @@ $(WORKDIR):
 clean:
 	make -C $(WORKDIR) clean
 	rm -f $(WORKDIR)/Makefile.coq{,.conf}
+
+install:
+	dune install coq-elpi
