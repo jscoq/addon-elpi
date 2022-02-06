@@ -8,7 +8,7 @@
 
 (rule
  (targets coq_elpi_builtins_HOAS.ml)
- (deps ../elpi/coq-HOAS.elpi)
+ (deps ../elpi/coq-HOAS.elpi ../Makefile ../Makefile.coq.local ../_CoqProject)
  (action
   (run make -C .. src/coq_elpi_builtins_HOAS.ml)))
 
