@@ -6,6 +6,12 @@
 
 (coq.pp (modules coq_elpi_vernacular_syntax coq_elpi_arg_syntax))
 
+(rule
+ (targets coq_elpi_builtins_HOAS.ml)
+ (deps ../elpi/coq-HOAS.elpi)
+ (action
+  (run make -C .. src/coq_elpi_builtins_HOAS.ml)))
+
 (install
  (section lib_root)
  (package coq-elpi)
