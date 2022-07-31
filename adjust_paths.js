@@ -1,6 +1,6 @@
 /**
  * This scripts adjusts the paths of `.elpi` files referenced
- * from `.v` files in the implementation of coq-elpi.
+ * from other `.elpi` files in the implementation of coq-elpi.
  * Because when it is built with Dune, the current working directory
  * is the workspace root, not `workdir`.
  */
@@ -9,24 +9,18 @@ var fs = require('fs'),
 
 function findCoqFiles() {
     var c = child_process.spawnSync('find',
-        ['workdir', '-name', '*.v', '-o', '-name', '*.elpi'], {encoding: 'utf-8'});
+        ['workdir', '-name', '*.elpi'], {encoding: 'utf-8'});
     return c.output[1].split(/\s+/).filter(x => x);
 }
 
 function processFile(filename) {
     var text = fs.readFileSync(filename, 'utf-8');
 
-    text = text.replace(/(Elpi (?:Checker|Template (?:Command|Tactic)|Accumulate File) ")(.*?)("[.])/g,
+    text = text.replace(/^(accumulate )(.*?)([.])/gm,
         (_, pre, fn, suf) => {
-        console.log('>> ', fn);
-        if (!fn.startsWith('elpi/workdir/')) fn = `elpi/workdir/${fn}`;
-        return (pre + fn + suf);
-    })
-    .replace(/^(accumulate )(.*?)([.])/gm,
-        (_, pre, fn, suf) => {
-        console.log('>> ', fn);
-        fn = fn.replace(/^elpi[/]/, '');
-        return (pre + fn + suf);
+        let fn_ = fn.replace(/^elpi[/]/, '');
+        console.log('>> ', fn, '->', fn_);
+        return (pre + fn_ + suf);
     });
     fs.writeFileSync(filename, text);
 }

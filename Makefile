@@ -1,6 +1,16 @@
 REPO = https://github.com/LPCIC/coq-elpi.git
-TAG = v1.12.0
+TAG = v1.14.0
+COMMIT = 6dd7511f5f636b748867ae1cdcfcf37511badcbf
 WORKDIR = workdir
+
+# Git boilerplate
+define GIT_CLONE_COMMIT
+mkdir -p $(WORKDIR) && cd $(WORKDIR) && git init && \
+git remote add origin $(REPO) && \
+git fetch --depth=1 origin $(COMMIT) && git reset --hard FETCH_HEAD
+endef
+
+GIT_CLONE = ${if $(COMMIT), $(GIT_CLONE_COMMIT), git clone --recursive --depth=1 -b $(TAG) $(REPO) $(WORKDIR)}
 
 .PHONY: all get prepare
 
@@ -22,7 +32,7 @@ $(WORKDIR)/src/coq_elpi_config.ml: prepare
 get: $(WORKDIR)
 
 $(WORKDIR):
-	git clone --depth=1 -b $(TAG) $(REPO) $(WORKDIR)
+	$(GIT_CLONE)
 	rm -f $(WORKDIR)/coq-builtin.elpi  # this file should not be there
 
 clean:
