@@ -16,8 +16,9 @@ GIT_CLONE = ${if $(COMMIT), $(GIT_CLONE_COMMIT), git clone --recursive --depth=1
 
 all: $(WORKDIR) prepare $(WORKDIR)/src/coq_elpi_config.ml
 	cp -r dune-files/* $(WORKDIR)/
+	dune build $(WORKDIR)/src/META.coq-elpi @all -j1
 	# must build plugin first
-	dune build $(WORKDIR)/src && dune build
+	#dune build $(WORKDIR)/src && dune build
 
 prepare: $(WORKDIR)
 	@echo '- Installing dependencies -'
