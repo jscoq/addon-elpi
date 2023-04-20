@@ -1,6 +1,6 @@
 REPO = https://github.com/LPCIC/coq-elpi.git
-TAG = v1.14.0
-COMMIT = 6dd7511f5f636b748867ae1cdcfcf37511badcbf
+TAG = v1.17.1
+COMMIT = 08592d98c3ede38df55514199a8cfc8fa70f6601
 WORKDIR = workdir
 
 # Git boilerplate
